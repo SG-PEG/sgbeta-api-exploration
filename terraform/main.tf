@@ -43,22 +43,21 @@ resource "azurerm_container_app_environment" "container_env" {
 # ------------------------------
 # Azure Container App
 # ------------------------------
-resource "azurerm_container_app" "container_app" {
-  name                = "ca-flask-api-001"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = var.az_region
-  container_app_environment_id = azurerm_container_app_environment.container_env.id
-  revision_mode = "Single"
+# resource "azurerm_container_app" "container_app" {
+#   name                = "ca-flask-api-001"
+#   resource_group_name = azurerm_resource_group.rg.name
+#   container_app_environment_id = azurerm_container_app_environment.container_env.id
+#   revision_mode = "Single"
 
-  template {
-    container {
-      name   = "flask-api"
-      image  = "${azurerm_container_registry.acr.login_server}/flask-api:latest"
-      cpu    = "0.5"
-      memory = "1.0Gi"
-    }
-  }
-}
+#   template {
+#     container {
+#       name   = "flask-api"
+#       image  = "${azurerm_container_registry.acr.login_server}/flask-api:latest"
+#       cpu    = "0.5"
+#       memory = "1.0Gi"
+#     }
+#   }
+# }
 
 #   identity {
 #     type = "SystemAssigned"
@@ -91,8 +90,8 @@ resource "azurerm_container_app" "container_app" {
 # ------------------------------
 # Role Assignment (Container Registry Pull)
 # ------------------------------
-resource "azurerm_role_assignment" "acr_pull" {
-  scope                = azurerm_container_registry.acr.id
-  role_definition_name = "AcrPull"
-  principal_id         = azurerm_container_app.container_app.identity[0].principal_id
-}
+# resource "azurerm_role_assignment" "acr_pull" {
+#   scope                = azurerm_container_registry.acr.id
+#   role_definition_name = "AcrPull"
+#   principal_id         = azurerm_container_app.container_app.identity[0].principal_id
+# }
