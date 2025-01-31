@@ -5,7 +5,7 @@
 # ------------------------------
 resource "azurerm_resource_group" "rg" {
   name     = "rg-sgbeta-api-exploration-003"
-  location = "East US"
+  location = var.az_region
 }
 
 # ------------------------------
@@ -14,7 +14,7 @@ resource "azurerm_resource_group" "rg" {
 resource "azurerm_container_registry" "acr" {
   name                = "crapiexploration"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  location            = var.az_region
   sku                 = "Basic"
   admin_enabled       = true
 }
@@ -24,7 +24,7 @@ resource "azurerm_container_registry" "acr" {
 # ------------------------------
 resource "azurerm_log_analytics_workspace" "log_analytics" {
   name                = "law-api-exploration-001"
-  location            = azurerm_resource_group.rg.location
+  location            = var.az_region
   resource_group_name = azurerm_resource_group.rg.name
   sku                 = "PerGB2018"
   retention_in_days   = 30
@@ -35,7 +35,7 @@ resource "azurerm_log_analytics_workspace" "log_analytics" {
 # ------------------------------
 resource "azurerm_container_app_environment" "container_env" {
   name                = "cae-api-exploration-001"
-  location            = azurerm_resource_group.rg.location
+  location            = var.az_region
   resource_group_name = azurerm_resource_group.rg.name
   log_analytics_workspace_id = azurerm_log_analytics_workspace.log_analytics.id
 }
@@ -46,7 +46,7 @@ resource "azurerm_container_app_environment" "container_env" {
 resource "azurerm_container_app" "container_app" {
   name                = "ca-flask-api-001"
   resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  location            = var.az_region
   container_app_environment_id = azurerm_container_app_environment.container_env.id
   revision_mode = "Single"
 
